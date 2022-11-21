@@ -1,4 +1,6 @@
-package vrp;
+package vrp.solver.model;
+
+import vrp.solver.algorithm.f_xj;
 
 public class fVRP extends f_xj {
     public double[] Lower;
@@ -12,8 +14,7 @@ public class fVRP extends f_xj {
 
         for(int i = 0; i < ff.N; i++) {
             Lower[i] = 0;
-            Upper[i] = ff.V;
-//            Upper[i] = 1;
+            Upper[i] = 1;
         }
 
         ff = null;

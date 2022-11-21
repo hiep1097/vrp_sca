@@ -1,4 +1,4 @@
-package vrp;
+package vrp.solver.algorithm.alo;
 
 public class RouletteWheelSelection {
     public static int choice(double [] weights){

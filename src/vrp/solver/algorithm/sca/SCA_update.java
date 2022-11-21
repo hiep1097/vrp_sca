@@ -1,8 +1,10 @@
-package vrp;
+package vrp.solver.algorithm.sca;
+
+import vrp.solver.algorithm.f_xj;
 
 import java.io.IOException;
 
-public class SCA {
+public class SCA_update {
     double infinity = 10E+50;
     int N;
     int dim;
@@ -18,7 +20,7 @@ public class SCA {
     double[][] Result;
     double[][] arrRandomBestVal;
 
-    public SCA(f_xj iff, double iLower[], double iUpper[], int imaxiter, int iN) {
+    public SCA_update(f_xj iff, double iLower[], double iUpper[], int imaxiter, int iN) {
         maxiter = imaxiter;
         ff = iff;
         Lower = iLower;
@@ -32,9 +34,18 @@ public class SCA {
         arrRandomBestVal = new double[maxiter][dim];
     }
 
+    //double abc[] = new double[]{0.04,0.26,0.02,0.19,0.28,0.13,0.09,0.21,0.16,0.07,0.11,0.3,0.1,0.01,0.27,0.14,0.03,0.06,0.22,0.15,0.05,0.08,0.2,0.24,0.25,0.17,0.12,0.29,0.18,0.23};
+  //  double abc[] = new double[]{0.05,0.2,0.08,0.29,0.19,0.17,0.13,0.24,0.01,0.1,0.15,0.22,0.12,0.07,0.21,0.11,0.04,0.09,0.03,0.02,0.06,0.14,0.25,0.27,0.28,0.3,0.16,0.18,0.23,0.26};
+
     void init() {
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < dim; j++) {
+//                X[i][j]=abc[j];
+//                if (i != 0){
+//                    X[i][j] = Lower[j] + (Upper[j] - Lower[j]) * Math.random();
+//                } else{
+//
+//                }
                 X[i][j] = Lower[j] + (Upper[j] - Lower[j]) * Math.random();
             }
         }
@@ -106,24 +117,88 @@ public class SCA {
             for (int i=0; i < N; i++) {
                 for (int j=0; j<dim; j++){
                     if (X[i][j] > Upper[j]){
-                        //X[i][j] = Upper[j];
-                        X[i][j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
+                        X[i][j] = Upper[j];
+                        //X[i][j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
                     }
                     if (X[i][j] < Lower[j]){
-                        //X[i][j] = Lower[j];
-                        X[i][j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
+                        X[i][j] = Lower[j];
+                        //X[i][j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
                     }
                 }
 
-                Objective_values[i] = ff.func(X[i]);
+                //OBL
+                double [] x_OBL = new double[dim];
+                double [] x_MCS = new double[dim];
+                double [] x_MCS_OBL = new double[dim];
+
+                for (int j=0; j<dim; j++){
+                    x_OBL[j] = (1.0 - (double) iter *(1.0 - 0.1)/ (double) maxiter) * (Lower[j]+ Upper[j] - X[i][j]);
+                }
+
+                //MCS of default
+                for (int j=0; j<dim; j++){
+                    x_MCS[j] = X[i][j];
+                    double random = Math.random();
+                    if (random < 0.15){
+                        x_MCS[j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
+                    }
+                }
+
+                //MCS of OBL
+                for (int j=0; j<dim; j++){
+                    x_MCS_OBL[j] = x_OBL[j];
+                    double random = Math.random();
+                    if (random < 0.15){
+                        x_MCS_OBL[j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
+                    }
+                }
+
+                double minValue = infinity;
+                double minPosititon[] = new double[dim];
+
+                double defaultFitness = ff.func(X[i]);
+                double oblFitness = ff.func(x_OBL);
+                double mcsDefaultFitness = ff.func(x_MCS);
+                double mcsOblFitness = ff.func(x_MCS_OBL);
+
+                if (minValue > defaultFitness){
+                    minValue = defaultFitness;
+                    for (int j=0; j<dim; j++){
+                        minPosititon[j] = X[i][j];
+                    }
+                }
+
+                if (minValue > oblFitness){
+                    minValue = oblFitness;
+                    for (int j=0; j<dim; j++){
+                        minPosititon[j] = x_OBL[j];
+                    }
+                }
+
+                if (minValue > mcsDefaultFitness){
+                    minValue = mcsDefaultFitness;
+                    for (int j=0; j<dim; j++){
+                        minPosititon[j] = x_MCS[j];
+                    }
+                }
+
+                if (minValue > mcsOblFitness){
+                    minValue = mcsOblFitness;
+                    for (int j=0; j<dim; j++){
+                        minPosititon[j] = x_MCS_OBL[j];
+                    }
+                }
+
+                Objective_values[i] = minValue;
                 // Update the destination if there is a better solution
                 if (Objective_values[i]<Destination_fitness){
                     for (int j=0; j<dim; j++){
-                        Destination_position[j] = X[i][j];
+                        Destination_position[j] = minPosititon[j];
                     }
                     Destination_fitness=Objective_values[i];
                 }
             }
+
             for (int j=0; j<dim; j++){
                 arrRandomBestVal[iter-1][j] = Destination_position[j];
             }

@@ -1,14 +1,17 @@
-package vrp;
+package vrp.solver.model;
+
+import vrp.solver.algorithm.gwo.GWO;
+import vrp.solver.algorithm.gwo.GWO_Update;
 
 public class Main {
 
     public static void main(String[] args) {
-        int maxiter = 50;
-        int numOfAgents = 20;
+        int maxiter = 100;
+        int numOfAgents = 50;
 
         fVRP fVRP = new fVRP();
 
-        SCA gwo = new SCA(fVRP, fVRP.Lower, fVRP.Upper, maxiter, numOfAgents);
+        GWO_Update gwo = new GWO_Update(fVRP, fVRP.Lower, fVRP.Upper, maxiter, numOfAgents);
         gwo.execute();
 
         for (int i=0; i<gwo.getArrayRandomResult().length; i++){
@@ -18,6 +21,4 @@ public class Main {
             vrp.printRoute();
         }
     }
-
-
 }

@@ -1,4 +1,4 @@
-package vrp;
+package vrp.solver.algorithm;
 
 import java.io.IOException;
 

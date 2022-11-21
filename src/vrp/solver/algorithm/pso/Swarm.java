@@ -1,4 +1,4 @@
-package vrp;
+package vrp.solver.algorithm.pso;
 
 public class Swarm {
     public Particles[] particles;

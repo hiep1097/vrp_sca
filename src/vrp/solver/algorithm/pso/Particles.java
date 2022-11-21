@@ -1,4 +1,4 @@
-package vrp;
+package vrp.solver.algorithm.pso;
 
 public class Particles {
     public double X[];

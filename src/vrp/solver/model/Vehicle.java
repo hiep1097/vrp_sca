@@ -1,4 +1,4 @@
-package vrp;
+package vrp.solver.model;
 
 public class Vehicle {
     String name;

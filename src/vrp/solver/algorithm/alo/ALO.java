@@ -1,4 +1,6 @@
-package vrp;
+package vrp.solver.algorithm.alo;
+
+import vrp.solver.algorithm.f_xj;
 
 import java.io.IOException;
 

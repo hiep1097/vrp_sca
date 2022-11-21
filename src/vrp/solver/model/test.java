@@ -1,4 +1,4 @@
-package vrp;
+package vrp.solver.model;
 
 import java.io.File;
 import java.util.*;

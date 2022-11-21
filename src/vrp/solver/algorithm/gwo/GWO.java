@@ -1,6 +1,7 @@
-package vrp;
+package vrp.solver.algorithm.gwo;
 
-import java.io.IOException;
+import vrp.solver.algorithm.f_xj;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -35,6 +36,7 @@ public class GWO
     double[][] Result;
     double[][] arrRandomBestVal;
     double [] worstArr;
+    double infinity = 10E+50;
 
     public GWO(f_xj iff,double iLower[],double iUpper[],int imaxiter,int iN)
     {
@@ -107,10 +109,14 @@ public class GWO
         return B ;
     }
 
+//    double abc[] = new double[]{0.04,0.26,0.02,0.19,0.28,0.13,0.09,0.21,0.16,0.07,0.11,0.3,0.1,0.01,0.27,0.14,0.03,0.06,0.22,0.15,0.05,0.08,0.2,0.24,0.25,0.17,0.12,0.29,0.18,0.23};
+    //double abc[] = new double[]{0.05,0.2,0.08,0.29,0.19,0.17,0.13,0.24,0.01,0.1,0.15,0.22,0.12,0.07,0.21,0.11,0.04,0.09,0.03,0.02,0.06,0.14,0.25,0.27,0.28,0.3,0.16,0.18,0.23,0.26};
+
     void init() {
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < D; j++) {
                 XX[i][j] = Lower[j] + (Upper[j] - Lower[j]) * Math.random();
+                //XX[i][j]=abc[j];
             }
         }
 

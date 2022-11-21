@@ -1,6 +1,6 @@
-package vrp;
+package vrp.solver.algorithm.gwo;
 
-import java.io.IOException;
+import vrp.solver.algorithm.f_xj;
 
 public class GWO_Update {
     double r1;
@@ -115,12 +115,16 @@ public class GWO_Update {
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < D; j++) {
                     if (XX[i][j] < Lower[j]) {
-                        XX[i][j] = Lower[j];
+                        XX[i][j] = Lower[j] + (Upper[j] - Lower[j]) * Math.random();
                     }
                     if (XX[i][j] > Upper[j]) {
-                        XX[i][j] = Upper[j];
+                        XX[i][j] = Lower[j] + (Upper[j] - Lower[j]) * Math.random();
                     }
                 }
+            }
+
+            for(int i = 0; i < D; i++) {
+                XX[N-1][i] = XX[0][i];
             }
 
             BESTVAL[iter] = Alpha_score;

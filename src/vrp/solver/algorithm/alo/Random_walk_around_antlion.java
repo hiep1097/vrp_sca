@@ -1,4 +1,4 @@
-package vrp;
+package vrp.solver.algorithm.alo;
 
 public class Random_walk_around_antlion {
     public int dim;

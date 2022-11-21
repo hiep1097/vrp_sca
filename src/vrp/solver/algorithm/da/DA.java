@@ -1,6 +1,7 @@
-package vrp;
+package vrp.solver.algorithm.da;
 
 import org.apache.commons.math3.special.Gamma;
+import vrp.solver.algorithm.f_xj;
 
 import java.io.IOException;
 
