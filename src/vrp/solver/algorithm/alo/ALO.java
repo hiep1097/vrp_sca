@@ -1,10 +1,11 @@
 package vrp.solver.algorithm.alo;
 
+import vrp.solver.algorithm.Algorithm;
 import vrp.solver.algorithm.f_xj;
 
 import java.io.IOException;
 
-public class ALO {
+public class ALO implements Algorithm {
     int N;
     int dim;
     int maxIter;

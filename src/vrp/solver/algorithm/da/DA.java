@@ -1,11 +1,12 @@
 package vrp.solver.algorithm.da;
 
 import org.apache.commons.math3.special.Gamma;
+import vrp.solver.algorithm.Algorithm;
 import vrp.solver.algorithm.f_xj;
 
 import java.io.IOException;
 
-public class DA {
+public class DA implements Algorithm {
     double [] lb;
     double [] ub;
     double [] r;

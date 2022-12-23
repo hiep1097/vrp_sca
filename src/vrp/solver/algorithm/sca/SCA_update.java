@@ -1,10 +1,11 @@
 package vrp.solver.algorithm.sca;
 
+import vrp.solver.algorithm.Algorithm;
 import vrp.solver.algorithm.f_xj;
 
 import java.io.IOException;
 
-public class SCA_update {
+public class SCA_update implements Algorithm  {
     double infinity = 10E+50;
     int N;
     int dim;

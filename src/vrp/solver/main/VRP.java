@@ -1,9 +1,14 @@
-package vrp.solver.model;
+package vrp.solver.main;
+
+import vrp.solver.model.Customer;
+import vrp.solver.model.CustomerSchedule;
+import vrp.solver.model.Vehicle;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
-public class VRP{
+public class VRP {
     public double infinity = 100000;
     public List<Customer> customers = new ArrayList<>();
     public List<Vehicle> vehicles = new ArrayList<>();
@@ -15,9 +20,27 @@ public class VRP{
 
     public double RES = 0;
     public double[] x_rand;
+    boolean chiadeuxe;
 
-    public VRP() {
-        readData("Data/30customer.txt");
+    public VRP(String customerFileName) {
+        readData("Data/"+customerFileName+".txt");
+        x = new int[N+1][N+1];
+        x_rand = new double[N];
+        //print_matrix(c, N+1);
+//        System.out.println("So khach hang: "+N);
+//        for (Customer customer: customers){
+//            System.out.println("Name: "+customer.getName() + " - Demand: "+customer.getDemand());
+//        }
+//        System.out.println();
+//        System.out.println("So xe: "+V);
+//        for (Vehicle vehicle: vehicles){
+//            System.out.println("Name: "+vehicle.getName() + " - Capacity: "+vehicle.getCapacity());
+//        }
+    }
+
+    public VRP(String customerFileName, String chiadeuxe) {
+        this.chiadeuxe = chiadeuxe.equals("YES");
+        readData("Data/"+customerFileName+".txt");
         x = new int[N+1][N+1];
         x_rand = new double[N];
         //print_matrix(c, N+1);
@@ -93,6 +116,11 @@ public class VRP{
                 //System.out.println("gia tri iiiiiii: "+i);
                 count++;
                 i++;
+                if (chiadeuxe){
+                    if (count == N/V){  //chia deu cac xe
+                        break;
+                    }
+                }
             }
             if (ok) {
                 Customer customer = getCustomerByName(customerSchedules.get(i-1).customerName);

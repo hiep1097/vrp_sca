@@ -1,11 +1,12 @@
 package vrp.Draw;
-import vrp.solver.model.fVRP;
+import vrp.solver.main.fVRP;
 
 public class DrawFunction {
+    static String customerFileName = "30customerM";
     public static void main(String[] args) throws Exception {
         int maxiter = 200;
         int numOfAgents = 50;
-        fVRP fVRP = new fVRP();
+        fVRP fVRP = new fVRP(customerFileName);
 //        PSO_Draw pso_draw = new PSO_Draw(fVRP, fVRP.Lower, fVRP.Upper, maxiter, numOfAgents);
 //        pso_draw.solution();
 //        pso_draw.getRes();

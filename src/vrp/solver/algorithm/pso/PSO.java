@@ -1,10 +1,11 @@
 package vrp.solver.algorithm.pso;
 
+import vrp.solver.algorithm.Algorithm;
 import vrp.solver.algorithm.f_xj;
 
 import java.io.IOException;
 
-public class PSO {
+public class PSO implements Algorithm {
     double r1, r2, c1, c2, w, wMax, wMin;
     int N;
     int dim;
