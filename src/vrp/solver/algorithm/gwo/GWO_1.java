@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class GWO
+public class GWO_1
 {
     double r1;
     double r2;
@@ -35,8 +35,9 @@ public class GWO
     double[][] arrRandomBestVal;
     double [] worstArr;
     double infinity = 10E+50;
+    double bestPosition [];
 
-    public GWO(f_xj iff,double iLower[],double iUpper[],int imaxiter,int iN)
+    public GWO_1(f_xj iff,double iLower[],double iUpper[],int imaxiter,int iN)
     {
         maxiter = imaxiter;
         ff = iff;
@@ -60,6 +61,7 @@ public class GWO
         X3 = new double[N][D];
 
         arrRandomBestVal = new double[maxiter][D];
+        bestPosition = new double[D];
     }
 
     double[][] sort_and_index(double[][] XXX) {
@@ -112,6 +114,13 @@ public class GWO
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < D; j++) {
                 XX[i][j] = Lower[j] + (Upper[j] - Lower[j]) * Math.random();
+                if (ff.func(XX[i]) == 10000){
+                    while (ff.func(XX[i]) == 10000){
+                        for(int jj = 0; jj < D; jj++) {
+                            XX[i][j] = Lower[j] + (Upper[j] - Lower[j]) * Math.random();
+                        }
+                    }
+                }
                 //XX[i][j]=abc[j];
             }
         }
@@ -128,6 +137,9 @@ public class GWO
 
         for(int i = 0; i < D; i++) {
             delta[i] = XX[2][i];
+        }
+        for(int i = 0; i < D; i++) {
+            bestPosition[i] = XX[0][i];
         }
     }
 
@@ -200,6 +212,11 @@ public class GWO
                     X3 = simplebounds(X3);
                     XX[i][j] = (X1[i][j] + X2[i][j] + X3[i][j]) / 3.0;
                 }
+                if (ff.func(XX[i]) == 10000){
+                    for(int j = 0; j < D; j++) {
+                        XX[i][j] = bestPosition[j];
+                    }
+                }
             }
             XX = simplebounds(XX);
             XX = sort_and_index(XX);
@@ -220,24 +237,16 @@ public class GWO
                 delta[i] = XX[2][i];
             }
 
+            if (ff.func(alfa) < ff.func(bestPosition)){
+                for(int i = 0; i < D; i++) {
+                    bestPosition[i] = alfa[i];
+                }
+            }
             for(int i = 0; i < D; i++) {
                 arrRandomBestVal[iter-1][i] = XX[0][i];
             }
             System.out.println("Iteration: "+iter);
-            if (ff.func(arrRandomBestVal[iter-1]) == 100000){
-                if (iter == 1){
-                    while (ff.func(arrRandomBestVal[iter-1]) == 100000){
-                        for(int i = 0; i < D; i++) {
-                            arrRandomBestVal[iter-1][i] = Lower[i] + (Upper[i] - Lower[i]) * Math.random();;
-                        }
-                    }
-                } else {
-                    for(int i = 0; i < D; i++) {
-                        arrRandomBestVal[iter-1][i] = arrRandomBestVal[iter-2][i];
-                    }
-                }
-            }
-            System.out.println("Best score: "+ff.func(arrRandomBestVal[iter-1]));
+            System.out.println("Best score: "+ff.func(XX[0]));
             iter++;
         }
 

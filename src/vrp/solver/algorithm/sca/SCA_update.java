@@ -34,18 +34,9 @@ public class SCA_update {
         arrRandomBestVal = new double[maxiter][dim];
     }
 
-    //double abc[] = new double[]{0.04,0.26,0.02,0.19,0.28,0.13,0.09,0.21,0.16,0.07,0.11,0.3,0.1,0.01,0.27,0.14,0.03,0.06,0.22,0.15,0.05,0.08,0.2,0.24,0.25,0.17,0.12,0.29,0.18,0.23};
-  //  double abc[] = new double[]{0.05,0.2,0.08,0.29,0.19,0.17,0.13,0.24,0.01,0.1,0.15,0.22,0.12,0.07,0.21,0.11,0.04,0.09,0.03,0.02,0.06,0.14,0.25,0.27,0.28,0.3,0.16,0.18,0.23,0.26};
-
     void init() {
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < dim; j++) {
-//                X[i][j]=abc[j];
-//                if (i != 0){
-//                    X[i][j] = Lower[j] + (Upper[j] - Lower[j]) * Math.random();
-//                } else{
-//
-//                }
                 X[i][j] = Lower[j] + (Upper[j] - Lower[j]) * Math.random();
             }
         }

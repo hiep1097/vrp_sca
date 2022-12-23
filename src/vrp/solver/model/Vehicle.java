@@ -1,8 +1,8 @@
 package vrp.solver.model;
 
 public class Vehicle {
-    String name;
-    int capacity;
+    public String name;
+    public int capacity;
 
     public Vehicle() {
     }

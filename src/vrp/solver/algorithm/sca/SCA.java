@@ -75,18 +75,18 @@ public class SCA {
 
     double[][] simplebounds(double s[][]) {
         for(int i = 0; i < N; i++) {
-            for(int j = 0; j < dim; j++) {
-                if(s[i][j] < Lower[j]) {
-                    s[i][j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
-                }
+        for(int j = 0; j < dim; j++) {
+            if(s[i][j] < Lower[j]) {
+                s[i][j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
+            }
 
-                if(s[i][j] > Upper[j]) {
-                    s[i][j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
-                }
+            if(s[i][j] > Upper[j]) {
+                s[i][j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
             }
         }
-        return s;
     }
+        return s;
+}
 
     double[][] solution()  {
         init();

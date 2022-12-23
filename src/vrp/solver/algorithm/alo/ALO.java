@@ -132,14 +132,62 @@ public class ALO {
                 // Boundar checking (bring back the antlions of ants inside search space if they go beyoud the boundaries
                 for (int j=0; j<dim; j++){
                     if (ant_position[i][j] > ub[j]){
-                        ant_position[i][j] = ub[j];
+                        ant_position[i][j] = lb[j] + ((ub[j] - lb[j]) * Math.random());
                     }
                     if (ant_position[i][j] < lb[j]){
-                        ant_position[i][j] = lb[j];
+                        ant_position[i][j] = lb[j] + ((ub[j] - lb[j]) * Math.random());
                     }
                 }
 
                 ants_fitness[i] = ff.func(ant_position[i]);
+
+                //use OBL. MCS
+                if (dim <= 20){
+                    //OBL
+                    double [] x_OBL = new double[dim];
+                    double [] x_MCS = new double[dim];
+                    double [] x_MCS_OBL = new double[dim];
+
+                    for (int j=0; j<dim; j++){
+                        x_OBL[j] = (1.0 - (double) iter *(1.0 - 0.1)/ (double) maxIter) * (lb[j]+ ub[j] - ant_position[i][j]);
+                    }
+
+                    //MCS of default
+                    for (int j=0; j<dim; j++){
+                        x_MCS[j] = ant_position[i][j];
+                        double random = Math.random();
+                        if (random < 0.15){
+                            x_MCS[j] = lb[j] + ((ub[j] - lb[j]) * Math.random());
+                        }
+                    }
+
+                    //MCS of OBL
+                    for (int j=0; j<dim; j++){
+                        x_MCS_OBL[j] = x_OBL[j];
+                        double random = Math.random();
+                        if (random < 0.15){
+                            x_MCS_OBL[j] = lb[j] + ((ub[j] - lb[j]) * Math.random());
+                        }
+                    }
+
+                    if (ff.func(x_OBL) < ff.func(ant_position[i])){
+                        for (int j=0; j<dim; j++){
+                            ant_position[i][j] = x_OBL[j];
+                        }
+                    }
+
+                    if (ff.func(x_MCS) < ff.func(ant_position[i])){
+                        for (int j=0; j<dim; j++){
+                            ant_position[i][j] = x_MCS[j];
+                        }
+                    }
+
+                    if (ff.func(x_MCS_OBL) < ff.func(ant_position[i])){
+                        for (int j=0; j<dim; j++){
+                            ant_position[i][j] = x_MCS_OBL[j];
+                        }
+                    }
+                }
             }
 
             // Update antlion positions and fitnesses based of the ants (if an ant

@@ -3,13 +3,15 @@ import vrp.solver.model.fVRP;
 
 public class DrawFunction {
     public static void main(String[] args) throws Exception {
-        int maxiter = 50;
-        int numOfAgents = 20;
+        int maxiter = 200;
+        int numOfAgents = 50;
         fVRP fVRP = new fVRP();
-//        SCA_Draw result_SCA = new SCA_Draw(fVRP, fVRP.Lower, fVRP.Upper, maxiter, numOfAgents);
-//        result_SCA.getRes();
+//        PSO_Draw pso_draw = new PSO_Draw(fVRP, fVRP.Lower, fVRP.Upper, maxiter, numOfAgents);
+//        pso_draw.solution();
+//        pso_draw.getRes();
 
-        SCA_Update_Draw result_SCA_Update = new SCA_Update_Draw(fVRP, fVRP.Lower, fVRP.Upper, maxiter, numOfAgents);
-        result_SCA_Update.getRes();
+        DA_Draw da_draw = new DA_Draw(fVRP, fVRP.Lower, fVRP.Upper, maxiter, numOfAgents);
+        da_draw.solution();
+        da_draw.getRes();
     }
 }

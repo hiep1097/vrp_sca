@@ -1,11 +1,11 @@
-package vrp.solver.algorithm.da;
+package vrp.Draw;
 
 import org.apache.commons.math3.special.Gamma;
 import vrp.solver.algorithm.f_xj;
 
 import java.io.IOException;
 
-public class DA {
+public class DA_Draw {
     double [] lb;
     double [] ub;
     double [] r;
@@ -27,7 +27,12 @@ public class DA {
     int position;
     double[][] Result;
     double[][] arrRandomBestVal;
-    public DA(f_xj fobj, double [] lb, double [] ub, int Max_iteration, int SearchAgents_no) {
+
+    //for draw
+    double X_1[];   //gia tri x1 cua search agent dau tien sau moi lan lap
+    double X_2[];   //gia tri x2 cua search agent dau tien sau moi lan lap
+
+    public DA_Draw(f_xj fobj, double [] lb, double [] ub, int Max_iteration, int SearchAgents_no) {
         this.fobj = fobj;
         dim = ub.length;
         this.SearchAgents_no = SearchAgents_no;
@@ -47,6 +52,8 @@ public class DA {
         Best_pos = new double[dim];
         position = 0;
         arrRandomBestVal = new double[Max_iteration][dim];
+        X_1 = new double[Max_iteration];
+        X_2 = new double[Max_iteration];
     }
 
     void init(){
@@ -297,6 +304,12 @@ public class DA {
                     }
                 }
             }
+//            if (iter==1){
+//                X[0][0] = 0.8;
+//                X[0][1] = 0.8;
+//            }
+            X_1[iter-1] = X[0][0];
+            X_2[iter-1] = X[0][1];
             Best_score=Food_fitness;
             Best_pos=Food_pos;
             for (int i=0; i<dim; i++){
@@ -412,6 +425,11 @@ public class DA {
             d[i] = Math.sqrt((a[i]-b[i])*(a[i]-b[i]));
         }
         return d;
+    }
+
+    public double getRes() throws IOException {
+        ExcelUtils.fillX1X2ToExcelForDraw(X_1, X_2, Max_iteration, 9);
+        return Best_score;
     }
 
     double nextRand(){

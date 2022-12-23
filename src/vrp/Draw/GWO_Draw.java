@@ -1,12 +1,14 @@
-package vrp.solver.algorithm.gwo;
+package vrp.Draw;
 
 import vrp.solver.algorithm.f_xj;
+import vrp.solver.algorithm.sca.SCA;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class GWO
+public class GWO_Draw
 {
     double r1;
     double r2;
@@ -36,7 +38,12 @@ public class GWO
     double [] worstArr;
     double infinity = 10E+50;
 
-    public GWO(f_xj iff,double iLower[],double iUpper[],int imaxiter,int iN)
+    //for draw
+    double X_1[];   //gia tri x1 cua search agent dau tien sau moi lan lap
+    double X_2[];   //gia tri x2 cua search agent dau tien sau moi lan lap
+    static int Search_agent_1_pos = 0;
+
+    public GWO_Draw(f_xj iff, double iLower[], double iUpper[], int imaxiter, int iN)
     {
         maxiter = imaxiter;
         ff = iff;
@@ -60,9 +67,15 @@ public class GWO
         X3 = new double[N][D];
 
         arrRandomBestVal = new double[maxiter][D];
+        X_1 = new double[maxiter];
+        X_2 = new double[maxiter];
     }
 
     double[][] sort_and_index(double[][] XXX) {
+        double temp [] = new double[D];
+        for (int i=0; i<D; i++){
+            temp[i] = XXX[Search_agent_1_pos][i];
+        }
         double[] yval = new double[N];
 
         for(int i = 0; i < N; i++) {
@@ -100,6 +113,27 @@ public class GWO
             for(int j = 0; j < D; j++) {
                 B[i][j] = XXX[indexes[i]][j];
             }
+        }
+
+        boolean okk = false;
+        for (int i=0; i<N; i++){
+            boolean ok = true;
+            for (int j=0; j<D; j++){
+                if (temp[j] != B[i][j]){
+                    ok = false;
+                    break;
+                }
+            }
+            if (ok){
+                Search_agent_1_pos = i;
+                System.out.println("Search_agent_1_pos: "+Search_agent_1_pos);
+                okk = true;
+                break;
+            }
+        }
+
+        if (!okk){
+            System.out.println("ahuhu");
         }
 
         return B ;
@@ -220,6 +254,9 @@ public class GWO
                 delta[i] = XX[2][i];
             }
 
+            X_1[iter-1] = XX[Search_agent_1_pos][0];
+            X_2[iter-1] = XX[Search_agent_1_pos][1];
+
             for(int i = 0; i < D; i++) {
                 arrRandomBestVal[iter-1][i] = XX[0][i];
             }
@@ -253,6 +290,12 @@ public class GWO
 
     public void execute(){
         Result = solution();
+    }
+
+    public double getRes() throws IOException {
+        double[][] in=solution();
+        ExcelUtils.fillX1X2ToExcelForDraw(X_1, X_2, maxiter, 9);
+        return in[0][0];
     }
 
     public double[][] getArrayRandomResult(){

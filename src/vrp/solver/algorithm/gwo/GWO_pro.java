@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class GWO
+public class GWO_pro
 {
     double r1;
     double r2;
@@ -33,10 +33,10 @@ public class GWO
 
     double[][] Result;
     double[][] arrRandomBestVal;
-    double [] worstArr;
-    double infinity = 10E+50;
+    double a_gwo;
+    double initArray[];
 
-    public GWO(f_xj iff,double iLower[],double iUpper[],int imaxiter,int iN)
+    public GWO_pro(f_xj iff, double iLower[], double iUpper[], int imaxiter, int iN, double a_gwo, double initArray[])
     {
         maxiter = imaxiter;
         ff = iff;
@@ -58,7 +58,8 @@ public class GWO
         X1 = new double[N][D];
         X2 = new double[N][D];
         X3 = new double[N][D];
-
+        this.a_gwo = a_gwo;
+        this.initArray = initArray;
         arrRandomBestVal = new double[maxiter][D];
     }
 
@@ -105,14 +106,18 @@ public class GWO
         return B ;
     }
 
-//    double abc[] = new double[]{0.04,0.26,0.02,0.19,0.28,0.13,0.09,0.21,0.16,0.07,0.11,0.3,0.1,0.01,0.27,0.14,0.03,0.06,0.22,0.15,0.05,0.08,0.2,0.24,0.25,0.17,0.12,0.29,0.18,0.23};
-    //double abc[] = new double[]{0.05,0.2,0.08,0.29,0.19,0.17,0.13,0.24,0.01,0.1,0.15,0.22,0.12,0.07,0.21,0.11,0.04,0.09,0.03,0.02,0.06,0.14,0.25,0.27,0.28,0.3,0.16,0.18,0.23,0.26};
-
-    void init() {
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < D; j++) {
-                XX[i][j] = Lower[j] + (Upper[j] - Lower[j]) * Math.random();
-                //XX[i][j]=abc[j];
+    void init(double arr[]) {
+        if (arr == null){
+            for(int i = 0; i < N; i++) {
+                for(int j = 0; j < D; j++) {
+                    XX[i][j] = Lower[j] + (Upper[j] - Lower[j]) * Math.random();
+                }
+            }
+        } else {
+            for(int i = 0; i < N; i++) {
+                for(int j = 0; j < D; j++) {
+                    XX[i][j] = arr[j];
+                }
             }
         }
 
@@ -148,12 +153,12 @@ public class GWO
     }
 
     double[][] solution(){
-        init();
+        init(initArray);
         int iter = 1;
         while(iter <= maxiter)
         {
             for(int j = 0; j < D; j++) {
-                a[j] = 2.0 -((double)iter * (2.0 / (double)maxiter));
+                a[j] = a_gwo -((double)iter * (a_gwo / (double)maxiter));
             }
 
             for(int i = 0; i < N; i++)

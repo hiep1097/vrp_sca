@@ -1,10 +1,12 @@
-package vrp.solver.algorithm.pso;
+package vrp.Draw;
 
 import vrp.solver.algorithm.f_xj;
+import vrp.solver.algorithm.pso.Particles;
+import vrp.solver.algorithm.pso.Swarm;
 
 import java.io.IOException;
 
-public class PSO {
+public class PSO_Draw {
     double r1, r2, c1, c2, w, wMax, wMin;
     int N;
     int dim;
@@ -20,7 +22,11 @@ public class PSO {
     Swarm swarm;
     double [] worstArr;
 
-    public PSO(f_xj iff, double[] Lower, double[] Upper, int imaxIter, int iN) {
+    //for draw
+    double X_1[];   //gia tri x1 cua search agent dau tien sau moi lan lap
+    double X_2[];   //gia tri x2 cua search agent dau tien sau moi lan lap
+
+    public PSO_Draw(f_xj iff, double[] Lower, double[] Upper, int imaxIter, int iN) {
         maxIter = imaxIter;
         ff = iff;
         lb = Lower;
@@ -32,6 +38,9 @@ public class PSO {
         X = new double[N][dim];
         arrRandomBestVal = new double[maxIter][dim];
         worstArr = new double[dim];
+
+        X_1 = new double[maxIter];
+        X_2 = new double[maxIter];
     }
 
     void init() {
@@ -51,6 +60,7 @@ public class PSO {
                 swarm.particles[i].X[j] = lb[j] + (ub[j] - lb[j]) * nextRand();
             }
         }
+
     }
 
     double[][] solution() {
@@ -123,6 +133,12 @@ public class PSO {
             }
             System.out.println("Iteration: "+iter);
             System.out.println("Best score: "+swarm.GBEST.O);
+            if (iter==1){
+                X[0][0] = 0.8;
+                X[0][1] = 0.8;
+            }
+            X_1[iter-1] = swarm.particles[0].X[0];
+            X_2[iter-1] = swarm.particles[0].X[1];
             iter++;
         }
 
@@ -161,6 +177,11 @@ public class PSO {
 
     public double[] getWorstArray() {
         return worstArr;
+    }
+
+    public double getRes() throws IOException {
+        ExcelUtils.fillX1X2ToExcelForDraw(X_1, X_2, maxIter, 9);
+        return swarm.GBEST.O;
     }
 
     double nextRand(){

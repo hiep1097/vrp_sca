@@ -1,9 +1,13 @@
-package vrp.solver.model;
+package vrp.Draw;
+
+import vrp.solver.model.Customer;
+import vrp.solver.model.CustomerSchedule;
+import vrp.solver.model.Vehicle;
 
 import java.io.File;
 import java.util.*;
 
-public class test{
+public class test_draw{
     public double infinity = 100000;
     public List<Customer> customers = new ArrayList<>();
     public List<Vehicle> vehicles = new ArrayList<>();
@@ -16,8 +20,8 @@ public class test{
     public double RES = 0;
     public double[] x_rand;
 
-    public test() {
-        readData("Data/30customerM.txt");
+    public test_draw() {
+        readData("Data/25customerM.txt");
         x = new int[N+1][N+1];
         x_rand = new double[N];
         //print_matrix(c, N+1);
@@ -33,7 +37,7 @@ public class test{
     }
 
     public double Execute(double x[]) {
-        for (int i=0; i<x.length; i++){
+        for (int i=0; i<x.length-1; i++){
             x_rand[i] = x[i];
         }
         ExecuteAlgorithm();
@@ -162,4 +166,5 @@ public class test{
                 .orElse(null);
     }
 }
+
 

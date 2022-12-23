@@ -22,6 +22,8 @@ public class SCA_Draw {
 
     //for draw
     double F_min[]; //F min tai moi lan lap
+    double X_1[];   //gia tri x1 cua search agent dau tien sau moi lan lap
+    double X_2[];   //gia tri x2 cua search agent dau tien sau moi lan lap
 
     public SCA_Draw(f_xj iff, double iLower[], double iUpper[], int imaxiter, int iN) {
         maxiter = imaxiter;
@@ -36,6 +38,8 @@ public class SCA_Draw {
         Objective_values = new double[N];
         arrRandomBestVal = new double[maxiter][dim];
         F_min = new double[maxiter];
+        X_1 = new double[maxiter];
+        X_2 = new double[maxiter];
     }
 
     //double abc[] = new double[]{0.04,0.26,0.02,0.19,0.28,0.13,0.09,0.21,0.16,0.07,0.11,0.3,0.1,0.01,0.27,0.14,0.03,0.06,0.22,0.15,0.05,0.08,0.2,0.24,0.25,0.17,0.12,0.29,0.18,0.23};
@@ -75,6 +79,8 @@ public class SCA_Draw {
         System.out.println("Iter: 1");
         System.out.println(Destination_fitness);
         F_min[0] = Destination_fitness;
+        X_1[0] = X[0][0];
+        X_2[0] = X[0][1];
     }
 
     double[][] simplebounds(double s[][]) {
@@ -121,11 +127,11 @@ public class SCA_Draw {
                 for (int j=0; j<dim; j++){
                     if (X[i][j] > Upper[j]){
                         X[i][j] = Upper[j];
-                        //X[i][j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
+                        X[i][j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
                     }
                     if (X[i][j] < Lower[j]){
                         X[i][j] = Lower[j];
-                        //X[i][j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
+                        X[i][j] = Lower[j] + ((Upper[j] - Lower[j]) * Math.random());
                     }
                 }
 
@@ -143,6 +149,8 @@ public class SCA_Draw {
                 arrRandomBestVal[iter-1][j] = Destination_position[j];
             }
             F_min[iter-1] = Destination_fitness;
+            X_1[iter-1] = X[0][0];
+            X_2[iter-1] = X[0][1];
             System.out.println("Iter: "+iter);
             System.out.println(Destination_fitness);
             iter++;
